@@ -192,6 +192,9 @@ pyrightconfig.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 
+# Local editor config stays out of the repository
+.vscode/
+
 # Local History for Visual Studio Code
 .history/
 
