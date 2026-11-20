@@ -2,23 +2,15 @@
 
 Victor Miller · [GitHub](https://github.com/victor-mler) · [LinkedIn](https://www.linkedin.com/in/miller-victor)
 
-An empirical study of concentration risk in the S&P 500 over 2016-2025.
+In August 2026, SPY's holdings had the same weight concentration as an equally weighted portfolio of about 48 positions. Returns from 2016 to 2025 are compared across three portfolios:
 
-The S&P 500 is the usual benchmark of passive diversification. Over the last ten years, a small group of large technology firms has grown so fast that it raises a question: does the index still spread risk, or has it become a bet on a few companies?
-
-The short answer: the S&P 500 holds 500 names, but its effective number of constituents is about 48. It behaves like a portfolio of roughly 48 equally weighted stocks.
-
-This notebook answers the question by comparing three portfolios:
-
-- the cap-weighted S&P 500 (SPY)
-- the S&P 500 Equal Weight (RSP), where each of the 500 constituents gets 0.2%
-- an equal-weight basket of the Magnificent Seven (Microsoft, Apple, Nvidia, Amazon, Alphabet, Meta, Tesla)
-
-The analysis covers volatility, correlation, normality, Sharpe and Sortino ratios, cumulative performance and maximum drawdown, and ends with the Herfindahl-Hirschman index and the effective number of constituents.
+- SPY, which tracks the cap-weighted S&P 500
+- RSP, which tracks the S&P 500 Equal Weight Index (0.2% target weight per company at quarterly rebalancing)
+- a simulated Magnificent Seven basket (Microsoft, Apple, Nvidia, Amazon, Alphabet, Meta and Tesla), rebalanced to equal weights daily
 
 ## Table of Contents
 
-- [The question](#the-question)
+- [What the comparison covers](#what-the-comparison-covers)
 - [Key results](#key-results)
 - [What is inside](#what-is-inside)
 - [Getting started](#getting-started)
@@ -26,13 +18,13 @@ The analysis covers volatility, correlation, normality, Sharpe and Sortino ratio
 - [Data and methodology notes](#data-and-methodology-notes)
 - [License](#license)
 
-## The question
+## What the comparison covers
 
-A market-cap-weighted index grows with its biggest winners. When a handful of firms carry most of the weight, the index stops being a broad market proxy and starts being a concentrated bet, with all the tail risk that comes with it. This notebook measures how concentrated the S&P 500 has become, and what that means for the investors who use it as their default diversification tool.
+SPY and RSP hold the same constituents; only the weights differ. Comparing their returns over 2016–2025 describes what those weights produced. The seven-stock basket takes concentration further. The holdings snapshot answers a separate question, about the spread of SPY's weights on one date.
 
 ## Key results
 
-The main finding is about concentration. The S&P 500 holds 500 names, but its Herfindahl-Hirschman index of 208.92 corresponds to an effective number of constituents of about 48. The cap-weighted index behaves like a portfolio of roughly 48 equally weighted stocks, not 500.
+The Herfindahl-Hirschman index of the SPY holdings is 208.92 on the 0–10,000 scale. The return statistics below use the earlier 2016–2025 sample.
 
 | Metric | S&P 500 | Equal Weight | Magnificent Seven |
 |---|---|---|---|
@@ -41,20 +33,18 @@ The main finding is about concentration. The S&P 500 holds 500 names, but its He
 | Compounded return over 10 years | +300.25% | +199.60% | +2251.74% |
 | Maximum drawdown | -33.72% | -39.04% | -49.38% |
 
-The Magnificent Seven earned far more than the two indices, but with the deepest drawdown. The S&P 500 has a higher Sharpe ratio than the equal-weighted version, which shows that less concentration and worse risk-adjusted performance are not the same claim.
+SPY had a higher Sharpe ratio than RSP over this period. The simulated basket had the highest compounded return and the deepest drawdown.
 
-![Growth of $1 in each portfolio, 2016-2025](figures/performance.png)
+![Cumulative return (%) by portfolio, 2016–2025](figures/performance.png)
 
 ## What is inside
-
-The notebook is organized in nine sections, each built on reusable Python functions:
 
 1. Data loading and preprocessing
 2. Daily simple and log returns, portfolio synthesis
 3. Historical and rolling volatility
 4. Correlation matrix
 5. Standardized moments, normality, Q-Q plot and Student t-fit
-6. Sharpe and Sortino ratios (static and rolling)
+6. Sharpe and Sortino ratios, including rolling Sharpe
 7. Cumulative performance and maximum drawdown
 8. Herfindahl-Hirschman index and effective number of constituents
 9. Conclusion
@@ -99,9 +89,9 @@ sp500-concentration-analysis/
 
 ## Data and methodology notes
 
-All returns are price returns, dividends excluded. The three portfolios are measured on the same basis, so the comparisons stay fair.
+Returns are computed from Yahoo Finance's adjusted closing prices. The seven stocks were chosen in hindsight; the basket is a historical comparison, not a strategy selected in 2016. The simulation does not deduct trading costs.
 
-The holdings weights are a *point-in-time snapshot*. Section 8 is about the current structure of the index, not its historical path.
+The holdings snapshot postdates the return sample. The effective number of constituents measures the spread of weights, without accounting for volatility or correlations.
 
 The risk-free rate comes from FRED (DGS3MO) and is only used to build daily excess returns for the Sharpe and Sortino ratios.
 
